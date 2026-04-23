@@ -14,13 +14,26 @@ const PORT         = process.env.PORT         || 3000;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 app.use(helmet({ crossOriginEmbedderPolicy: false }));
-app.use(cors({
-  origin:       [FRONTEND_URL, 'http://localhost:5173', 'http://localhost:3000'],
-  credentials:  true,
-  methods:      ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+const ALLOWED_ORIGINS = [
+  FRONTEND_URL,
+  'https://du-mctn-frontend.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:3000',
+];
+const corsOptions = {
+  origin: (origin, cb) => {
+    if (!origin || ALLOWED_ORIGINS.includes(origin) || /\.vercel\.app$/.test(origin)) {
+      cb(null, true);
+    } else {
+      cb(new Error(`CORS: origine non autorisée — ${origin}`));
+    }
+  },
+  credentials:    true,
+  methods:        ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type','Authorization'],
-}));
-app.options('*', cors());
+};
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(rateLimit({ windowMs: 15*60*1000, max: 300, standardHeaders: true }));
 app.use(rateLimit({ windowMs: 15*60*1000, max: 10, message: { error: 'Trop de tentatives de connexion' } }));
 app.use(compression());
