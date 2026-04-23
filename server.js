@@ -7,6 +7,7 @@ const morgan      = require('morgan');
 const path        = require('path');
 const rateLimit   = require('express-rate-limit');
 const { initSchema, seedData, getDb } = require('./db');
+const { swaggerUi, spec } = require('./swagger');
 
 const app          = express();
 const PORT         = process.env.PORT         || 3000;
@@ -27,6 +28,8 @@ app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec, { customSiteTitle: 'DU-MCTN API Docs' }));
 
 app.use('/api/auth',         require('./routes/auth'));
 app.use('/api/dashboard',    require('./routes/dashboard'));
@@ -79,6 +82,6 @@ initSchema();
 seedData();
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n🚀  DU-MCTN API démarrée sur le port ${PORT}`);
-  console.log(`📖  Docs  : http://localhost:${PORT}/api`);
+  console.log(`📖  Swagger : http://localhost:${PORT}/api-docs`);
   console.log(`🩺  Santé : http://localhost:${PORT}/health\n`);
 });
