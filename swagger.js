@@ -105,16 +105,16 @@ const spec = {
       Audience: {
         type: 'object',
         properties: {
-          id:              { type: 'integer' },
-          institution:     { type: 'string' },
-          contact:         { type: 'string' },
-          date:            { type: 'string', format: 'date' },
-          objet:           { type: 'string' },
-          status:          { type: 'string', enum: ['planifiee','tenue','annulee'] },
-          priority:        { type: 'string', enum: ['haute','moyenne'] },
-          suite_a_donner:  { type: 'string' },
-          followup_date:   { type: 'string', format: 'date' },
-          notes:           { type: 'string' },
+          id:             { type: 'integer' },
+          institution:    { type: 'string' },
+          contact:        { type: 'string' },
+          date:           { type: 'string', format: 'date' },
+          objet:          { type: 'string' },
+          status:         { type: 'string', enum: ['planifiee','tenue','annulee'] },
+          priority:       { type: 'string', enum: ['haute','moyenne'] },
+          suite_a_donner: { type: 'string' },
+          followup_date:  { type: 'string', format: 'date' },
+          notes:          { type: 'string' },
         },
       },
       TeamMember: {
@@ -136,13 +136,13 @@ const spec = {
       AuditLog: {
         type: 'object',
         properties: {
-          id:         { type: 'integer' },
-          user_id:    { type: 'string' },
-          user_name:  { type: 'string' },
-          action:     { type: 'string' },
-          resource:   { type: 'string' },
-          resource_id:{ type: 'string' },
-          created_at: { type: 'string', format: 'date-time' },
+          id:          { type: 'integer' },
+          user_id:     { type: 'string' },
+          user_name:   { type: 'string' },
+          action:      { type: 'string' },
+          resource:    { type: 'string' },
+          resource_id: { type: 'string' },
+          created_at:  { type: 'string', format: 'date-time' },
         },
       },
     },
@@ -186,7 +186,7 @@ const spec = {
     },
     '/api/auth/refresh': {
       post: {
-        tags: ['Auth'], summary: 'Renouveler le token d\'accès', security: [],
+        tags: ['Auth'], summary: "Renouveler le token d'accès", security: [],
         requestBody: {
           required: true,
           content: { 'application/json': { schema: {
@@ -216,7 +216,7 @@ const spec = {
     },
     '/api/auth/me': {
       get: {
-        tags: ['Auth'], summary: 'Profil de l\'utilisateur connecté',
+        tags: ['Auth'], summary: "Profil de l'utilisateur connecté",
         responses: {
           200: { description: 'Profil utilisateur', content: { 'application/json': { schema: { $ref: '#/components/schemas/User' } } } },
           401: { description: 'Non authentifié' },
@@ -303,7 +303,7 @@ const spec = {
     },
     '/api/programs/{id}': {
       get: {
-        tags: ['Programmes'], summary: 'Détail d\'un programme avec ses projets',
+        tags: ['Programmes'], summary: "Détail d'un programme avec ses projets",
         parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
         responses: {
           200: { description: 'Programme + projets', content: { 'application/json': { schema: { allOf: [{ $ref: '#/components/schemas/Program' }, { type: 'object', properties: { projects: { type: 'array', items: { $ref: '#/components/schemas/Project' } } } }] } } } },
@@ -330,7 +330,7 @@ const spec = {
     },
     '/api/programs/{id}/projects': {
       get: {
-        tags: ['Programmes'], summary: 'Projets d\'un programme',
+        tags: ['Programmes'], summary: "Projets d'un programme",
         parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
         responses: {
           200: { description: 'Projets', content: { 'application/json': { schema: { type: 'array', items: { $ref: '#/components/schemas/Project' } } } } },
@@ -427,7 +427,7 @@ const spec = {
     },
     '/api/diligences/{id}': {
       get: {
-        tags: ['Diligences'], summary: 'Détail d\'une diligence',
+        tags: ['Diligences'], summary: "Détail d'une diligence",
         parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
         responses: {
           200: { description: 'Diligence', content: { 'application/json': { schema: { $ref: '#/components/schemas/Diligence' } } } },
@@ -454,7 +454,7 @@ const spec = {
     },
     '/api/diligences/{id}/status': {
       patch: {
-        tags: ['Diligences'], summary: 'Changer le statut d\'une diligence',
+        tags: ['Diligences'], summary: "Changer le statut d'une diligence",
         parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
         requestBody: {
           required: true,
@@ -571,7 +571,7 @@ const spec = {
     },
     '/api/audiences/{id}/status': {
       patch: {
-        tags: ['Audiences'], summary: 'Changer le statut d\'une audience',
+        tags: ['Audiences'], summary: "Changer le statut d'une audience",
         parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
         requestBody: {
           required: true,
@@ -755,7 +755,7 @@ const spec = {
               version:   { type: 'string', example: '1.0.0' },
               timestamp: { type: 'string', format: 'date-time' },
             },
-          }}},
+          }}}},
         },
       },
     },
@@ -767,6 +767,7 @@ const spec = {
         },
       },
     },
+
   },
 };
 
