@@ -18,6 +18,7 @@ const ALLOWED_ORIGINS = [
   FRONTEND_URL,
   'https://du-mctn-frontend.vercel.app',
   'http://localhost:5173',
+  'http://localhost:5174',
   'http://localhost:3000',
 ];
 const corsOptions = {
@@ -35,7 +36,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 app.use(rateLimit({ windowMs: 15*60*1000, max: 300, standardHeaders: true }));
-app.use(rateLimit({ windowMs: 15*60*1000, max: 10, message: { error: 'Trop de tentatives de connexion' } }));
+const loginLimiter = rateLimit({ windowMs: 15*60*1000, max: 20, message: { error: 'Trop de tentatives de connexion' } });
 app.use(compression());
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '10mb' }));
@@ -44,6 +45,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec, { customSiteTitle: 'DU-MCTN API Docs' }));
 
+app.use('/api/auth/login', loginLimiter);
 app.use('/api/auth',         require('./routes/auth'));
 app.use('/api/dashboard',    require('./routes/dashboard'));
 app.use('/api/programs',     require('./routes/programs'));
