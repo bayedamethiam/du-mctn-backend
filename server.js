@@ -93,10 +93,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: process.env.NODE_ENV === 'production' ? 'Erreur serveur interne' : err.message });
 });
 
-initSchema();
-seedData();
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`\n🚀  DU-MCTN API démarrée sur le port ${PORT}`);
-  console.log(`📖  Swagger : http://localhost:${PORT}/api-docs`);
-  console.log(`🩺  Santé : http://localhost:${PORT}/health\n`);
-});
+(async () => {
+  await initSchema();
+  await seedData();
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n🚀  DU-MCTN API démarrée sur le port ${PORT}`);
+    console.log(`📖  Swagger : http://localhost:${PORT}/api-docs`);
+    console.log(`🩺  Santé : http://localhost:${PORT}/health\n`);
+  });
+})();

@@ -32,13 +32,11 @@ function auditLog(action, resource) {
     const orig = res.json.bind(res);
     res.json = body => {
       if (res.statusCode < 400 && req.user) {
-        try {
-          getDb().prepare(
-            'INSERT INTO audit_log (user_id,user_name,action,resource,resource_id,ip) VALUES (?,?,?,?,?,?)'
-          ).run(req.user.id, req.user.name, action, resource,
-               req.params.id || body?.id || null,
-               req.ip || req.connection?.remoteAddress);
-        } catch {}
+        getDb().prepare(
+          'INSERT INTO audit_log (user_id,user_name,action,resource,resource_id,ip) VALUES (?,?,?,?,?,?)'
+        ).run(req.user.id, req.user.name, action, resource,
+             req.params.id || body?.id || null,
+             req.ip || req.connection?.remoteAddress).catch(() => {});
       }
       return orig(body);
     };
