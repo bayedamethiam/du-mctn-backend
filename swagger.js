@@ -1,5 +1,7 @@
 const swaggerUi = require('swagger-ui-express');
 
+const BASE_URL = process.env.API_BASE_URL || 'http://localhost:3001';
+
 const spec = {
   openapi: '3.0.3',
   info: {
@@ -9,8 +11,8 @@ const spec = {
     contact: { name: 'Delivery Unit MCTN', email: 'm.diallo@mctn.sn' },
   },
   servers: [
-    { url: 'https://du-mctn-backend-production.up.railway.app', description: 'Production (Railway)' },
-    { url: 'http://localhost:3000', description: 'Local' },
+    { url: BASE_URL, description: 'Production' },
+    { url: 'http://localhost:3001', description: 'Local' },
   ],
   components: {
     securitySchemes: {
